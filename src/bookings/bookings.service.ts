@@ -6,11 +6,13 @@ import {
 
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 
 import { BookingEntity } from './entities/booking.entity';
 
 import { CreateBookingDto } from './dto/create-booking.dto';
+
+import { GetBookingsQueryDto } from './dto/get-bookings-query.dto';
 
 import { UpdateBookingStatusDto } from './dto/update-booking-status.dto';
 
@@ -87,8 +89,63 @@ export class BookingsService {
     return await this.bookingRepository.save(booking);
   }
 
-  async findAll() {
-    return await this.bookingRepository.find();
+  // find ALL with pagination, filter, Search
+  async findAll(query: GetBookingsQueryDto) {
+    const {
+      page,
+
+      limit,
+
+      status,
+
+      search,
+    } = query;
+
+    const queryBuilder = this.bookingRepository
+      .createQueryBuilder('booking')
+      .leftJoinAndSelect('booking.service', 'service');
+
+    if (status) {
+      queryBuilder.andWhere('booking.status = :status', {
+        status,
+      });
+    }
+
+    if (search) {
+      queryBuilder.andWhere(
+        `(LOWER(booking.customerName) LIKE LOWER(:search)
+      OR LOWER(booking.customerEmail) LIKE LOWER(:search)
+      OR booking.customerPhone LIKE :search)`,
+
+        {
+          search: `%${search}%`,
+        },
+      );
+    }
+
+    queryBuilder
+
+      .orderBy('booking.createdAt', 'DESC')
+
+      .skip((page - 1) * limit)
+
+      .take(limit);
+
+    const [data, total] = await queryBuilder.getManyAndCount();
+
+    return {
+      data,
+
+      meta: {
+        total,
+
+        page,
+
+        limit,
+
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
   async findOne(id: number) {

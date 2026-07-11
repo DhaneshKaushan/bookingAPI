@@ -7,12 +7,12 @@ import {
   Post,
   UseGuards,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 
-import {
- ApiBearerAuth,
- ApiTags
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, ApiQuery } from '@nestjs/swagger';
+
+import { GetBookingsQueryDto } from './dto/get-bookings-query.dto';
 
 import { BookingsService } from './bookings.service';
 
@@ -26,7 +26,6 @@ import { RolesGuard } from '../common/guards/roles.guard';
 
 import { Roles } from '../common/decorators/roles.decorator';
 
-
 @ApiTags('Bookings')
 @Controller('bookings')
 export class BookingsController {
@@ -39,14 +38,37 @@ export class BookingsController {
     return this.bookingsService.create(dto);
   }
 
-  // Admin API
+  // Admin API with pagination ,filter, search
 
   @Get()
   @ApiBearerAuth()
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    example: 1,
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    example: 10,
+  })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    example: 'CONFIRMED',
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    example: 'Dhanesh',
+  })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
-  findAll() {
-    return this.bookingsService.findAll();
+  findAll(
+    @Query()
+    query: GetBookingsQueryDto,
+  ) {
+    return this.bookingsService.findAll(query);
   }
 
   @Get(':id')
