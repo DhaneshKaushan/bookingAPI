@@ -45,9 +45,10 @@ export class User {
   role!:UserRole;
 
   @Column({
+    type:'varchar',
     nullable:true,
   })
-  refreshTokenHash?:string;
+  refreshTokenHash!:string | null;
 
 
   @CreateDateColumn()

@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { JwtService } from '@nestjs/jwt';
 
@@ -36,6 +40,7 @@ export class AuthService {
     });
   }
 
+  // register API
   async register(dto: RegisterDto) {
     const existingUser = await this.usersService.findByEmail(dto.email);
 
@@ -65,6 +70,7 @@ export class AuthService {
     };
   }
 
+  // login API
   async login(dto: LoginDto) {
     const user = await this.usersService.findByEmail(dto.email);
 
@@ -111,6 +117,7 @@ export class AuthService {
     };
   }
 
+  // refresh API
   async refresh(refreshToken: string) {
     let payload: any;
 
@@ -142,6 +149,23 @@ export class AuthService {
 
     return {
       accessToken,
+    };
+  }
+
+  // Logout API
+  async logout(userId: number) {
+    const user = await this.usersService.findById(userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    user.refreshTokenHash = null;
+
+    await this.usersService.save(user);
+
+    return {
+      message: 'Logout successful',
     };
   }
 }
