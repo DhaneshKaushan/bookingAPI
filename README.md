@@ -88,7 +88,7 @@ git clone https://github.com/DhaneshKaushan/bookingAPI.git
 ## Move into the project
 
 ```bash
-cd service-booking-api
+cd bookingApi
 ```
 
 ## Install dependencies
