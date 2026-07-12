@@ -82,7 +82,7 @@ Administrators can:
 ## Clone the repository
 
 ```bash
-git clone https://github.com/<your-username>/service-booking-api.git
+git clone https://github.com/DhaneshKaushan/bookingAPI.git
 ```
 
 ## Move into the project
