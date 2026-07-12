@@ -115,10 +115,8 @@ DB_PASSWORD=your_password
 DB_DATABASE=service_booking_db
 
 JWT_SECRET=your_access_secret
-JWT_EXPIRES_IN=15m
 
 JWT_REFRESH_SECRET=your_refresh_secret
-JWT_REFRESH_EXPIRES_IN=7d
 ```
 
 ---
