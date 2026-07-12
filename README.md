@@ -1,98 +1,387 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Service Booking API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A RESTful Service Booking API built using **NestJS**, **TypeScript**, **PostgreSQL**, and **TypeORM**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+This project was developed as a technical assignment and demonstrates secure authentication, role-based authorization, service management, and booking management using NestJS best practices.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+# Project Overview
 
-## Project setup
+The application allows administrators to manage services while allowing customers to browse available services and create bookings without authentication.
+
+## Features
+
+### Authentication
+
+* User Registration
+* User Login
+* JWT Access Token Authentication
+* Refresh Token Authentication
+* Logout
+* Password Hashing using bcrypt
+* Refresh Token Hashing using bcrypt
+
+### Authorization
+
+* Role-Based Authorization (ADMIN / CUSTOMER)
+* JWT Authentication Guard
+* Roles Guard
+
+### Service Management
+
+Administrators can:
+
+* Create Service
+* Update Service
+* Delete Service
+
+Public users can:
+
+* View All Services
+* View Service by ID
+
+### Booking Management
+
+Public users can:
+
+* Create Booking
+* Cancel Booking
+
+Administrators can:
+
+* View All Bookings
+* View Booking by ID
+* Update Booking Status
+
+### Additional Features
+
+* Pagination
+* Booking Search
+* Filter Bookings by Status
+* Refresh Token
+* Prevent duplicate bookings for the same service, date, and time
+* Swagger API Documentation
+
+---
+
+# Technology Stack
+
+* NestJS
+* TypeScript
+* PostgreSQL
+* TypeORM
+* Passport JWT
+* bcrypt
+* Swagger
+
+---
+
+# Installation Steps
+
+## Clone the repository
 
 ```bash
-$ npm install
+git clone https://github.com/<your-username>/service-booking-api.git
 ```
 
-## Compile and run the project
+## Move into the project
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+cd service-booking-api
 ```
 
-## Run tests
+## Install dependencies
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+# Environment Variables
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Create a `.env` file in the project root.
+
+Example:
+
+```env
+PORT=3000
+
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=your_password
+DB_DATABASE=service_booking_db
+
+JWT_SECRET=your_access_secret
+JWT_EXPIRES_IN=15m
+
+JWT_REFRESH_SECRET=your_refresh_secret
+JWT_REFRESH_EXPIRES_IN=7d
+```
+
+---
+
+# Database Setup
+
+Create a PostgreSQL database.
+
+Example:
+
+```
+service_booking_db
+```
+
+Update the database credentials in your `.env` file.
+
+If TypeORM synchronization is enabled:
+
+```typescript
+synchronize: true
+```
+
+the tables will be created automatically on application startup.
+
+---
+
+# Running the Application
+
+## Development
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm run start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## Production
 
-## Resources
+```bash
+npm run build
+npm run start:prod
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+---
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+# Running Migrations
 
-## Support
+This project currently uses **TypeORM synchronize** during development.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+If migrations are enabled later:
 
-## Stay in touch
+Generate migration
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+npm run migration:generate
+```
 
-## License
+Run migrations
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```bash
+npm run migration:run
+```
+
+---
+
+# API Documentation
+
+Swagger documentation is available after starting the application.
+
+```
+http://localhost:3000/api
+```
+
+---
+
+# API Endpoints
+
+## Authentication
+
+| Method | Endpoint         | Access           | Description                               |
+| ------ | ---------------- | ---------------- | ----------------------------------------- |
+| POST   | `/auth/register` | 🌍 Public        | Register a new customer                   |
+| POST   | `/auth/login`    | 🌍 Public        | Login and receive Access & Refresh Tokens |
+| POST   | `/auth/refresh`  | 🌍 Public        | Generate a new Access Token               |
+| POST   | `/auth/logout`   | 🔒 Authenticated | Logout and invalidate Refresh Token       |
+
+---
+
+## Service Management
+
+| Method | Endpoint        | Authentication | Role   |
+| ------ | --------------- | -------------- | ------ |
+| POST   | `/services`     | ✅ Required     | ADMIN  |
+| GET    | `/services`     | ❌ Public       | Public |
+| GET    | `/services/:id` | ❌ Public       | Public |
+| PATCH  | `/services/:id` | ✅ Required     | ADMIN  |
+| DELETE | `/services/:id` | ✅ Required     | ADMIN  |
+
+### Service Model
+
+* title
+* description
+* duration
+* price
+* isActive
+
+---
+
+## Booking Management
+
+| Method | Endpoint               | Access    |
+| ------ | ---------------------- | --------- |
+| POST   | `/bookings`            | 🌍 Public |
+| GET    | `/bookings`            | 🔒 ADMIN  |
+| GET    | `/bookings/:id`        | 🔒 ADMIN  |
+| PATCH  | `/bookings/:id/status` | 🔒 ADMIN  |
+| PATCH  | `/bookings/:id/cancel` | 🌍 Public |
+
+### Booking Model
+
+* customerName
+* customerEmail
+* customerPhone
+* serviceId
+* bookingDate
+* bookingTime
+* status
+* notes
+
+### Booking Status
+
+* PENDING
+* CONFIRMED
+* CANCELLED
+* COMPLETED
+
+---
+
+# User Model
+
+The application uses a `User` entity to manage authentication and authorization.
+
+### User Model Fields
+
+| Field        | Type   | Description                                 |
+| ------------ | ------ | ------------------------------------------- |
+| id           | number | Unique user identifier                      |
+| name         | string | Full name of the user                       |
+| email        | string | Unique email address used for login         |
+| password     | string | Hashed password stored using bcrypt         |
+| role         | enum   | User role such as `ADMIN` or `CUSTOMER`     |
+| refreshToken | string | Hashed refresh token stored in the database |
+| createdAt    | Date   | Timestamp when the user was created         |
+| updatedAt    | Date   | Timestamp when the user was last updated    |
+
+### User Roles
+
+* ADMIN
+* CUSTOMER
+
+### User Responsibilities
+
+* Register and login securely
+* Store hashed passwords only
+* Store only one active refresh token per user
+* Support role-based authorization for protected routes
+
+---
+
+# Authentication Flow
+
+## Login
+
+Returns:
+
+* Access Token (15 minutes)
+* Refresh Token (7 days)
+
+The Refresh Token is hashed before being stored in the database.
+
+Only one active Refresh Token is allowed per user.
+
+## Refresh Token
+
+A valid Refresh Token can be exchanged for a new Access Token.
+
+The Refresh Token remains valid until:
+
+* It expires
+* The user logs in again
+* The user logs out
+
+## Logout
+
+Logging out removes the stored Refresh Token hash, making the previous Refresh Token unusable.
+
+---
+
+# Authorization Rules
+
+* Public users can browse available services.
+* Public users can create bookings.
+* Public users can cancel their bookings.
+* Only authenticated administrators can create, update, and delete services.
+* Only authenticated administrators can manage bookings.
+* JWT Access Tokens are required for protected endpoints.
+
+---
+
+# Business Rules
+
+* A booking must reference an existing service.
+* Booking dates cannot be in the past.
+* Cancelled bookings cannot be marked as **COMPLETED**.
+* Duplicate bookings for the same service, date, and time are prevented.
+* Passwords are securely hashed using bcrypt.
+* Refresh Tokens are stored as hashed values.
+* Logging in invalidates any previously issued Refresh Token.
+* Logout invalidates the current Refresh Token.
+
+---
+
+# Project Structure
+
+```
+src
+├── auth
+├── bookings
+├── common
+│   ├── decorators
+│   ├── enums
+│   ├── guards
+├── services
+├── users
+├── app.module.ts
+└── main.ts
+```
+
+---
+
+# Assumptions Made
+
+* Only ADMIN users can manage services.
+* Customers do not need authentication to create bookings.
+* Customers do not need authentication to cancel bookings.
+* TypeORM synchronization is enabled for development.
+
+---
+
+# Future Improvements
+
+* Docker Support
+* Unit Testing
+* Integration Testing
+* Database Migrations for Production
+* Email Notifications
+* Booking Confirmation Emails
+* Rate Limiting
+* Audit Logging
+* CI/CD Pipeline
+
+---
+
+# Author
+
+**Dhanesh Kaushan**
+
+NestJS | TypeScript | PostgreSQL | REST API Development
