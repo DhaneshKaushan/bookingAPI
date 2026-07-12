@@ -44,6 +44,11 @@ export class User {
   })
   role!:UserRole;
 
+  @Column({
+    nullable:true,
+  })
+  refreshTokenHash?:string;
+
 
   @CreateDateColumn()
   createdAt!:Date;

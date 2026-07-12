@@ -5,35 +5,34 @@ import { Repository } from 'typeorm';
 
 import { User } from './entities/user.entity';
 
-
 @Injectable()
 export class UsersService {
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+  ) {}
 
+  async create(userData: Partial<User>) {
+    return await this.userRepository.save(userData);
+  }
 
-constructor(
- @InjectRepository(User)
- private userRepository: Repository<User>
-){}
+  async save(user: User) {
+    return await this.userRepository.save(user);
+  }
 
+  async findByEmail(email: string) {
+    return await this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
+  }
 
-
-async create(userData: Partial<User>){
-
- return await this.userRepository.save(userData);
-
-}
-
-
-
-async findByEmail(email:string){
-
- return await this.userRepository.findOne({
-   where:{
-     email
-   }
- });
-
-}
-
-
+  async findById(id: number) {
+    return await this.userRepository.findOne({
+      where: {
+        id,
+      },
+    });
+  }
 }
